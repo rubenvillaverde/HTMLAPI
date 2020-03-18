@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>CAMINOSUPMBIMDATA</title>        
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
+        <!-- ../static/css/main.css    en lugar de esto pongo lo q está para x si se mueven los archivos, no tener que añadir más ../ -->
+    </head>
+    <body>
+        <!-- ojo el block conntent no es de html, es lenguaje de jinja para definir bloques, en este caso se llama bloque content-->
+        {% block content %}
+        {% endblock %}        
+        {% block content2 %}
+        {% endblock %}
+        {% block content3 %}
+        {% endblock %}
+        
+      
+    </body>
+</html>

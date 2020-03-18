@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+    <form id="login-form" action="/loginhtml" method="post">
+        <!-- doy un id al form para poder interactuar con el mas adelasnte en el archivo de css.
+        Si pongo en CSS un elemento form, todo lo que mdefina en él será aplicado a todos los forsm de my website.
+    si pongo #login-form solo afectará a los id de login-form-->
+
+        <h2>LOGIN PRUEBAS SIN API</h2>
+        <input type="text" id="email" name="email" placeholder="email">
+        <input type="text" id="username" name="username" placeholder="username">
+        <input type="password" id="password" name="password" placeholder="password">
+        <input type="submit" id="submit-buttom">
+        
+
+    </form>
+{% endblock content %}
+
+{% block content2 %}
+    <form id="loginconapi-form" action="/login" method="POST">
+        <h2>LOGIN CON API</h2>
+        <input type="text" id="username" name="username" placeholder="name">
+        <input type="password" id="password" name="password" placeholder="password">     
+        <input type="submit" id="submit-buttom">
+        
+    </form>  
+
+{% endblock %}
+{% block content3 %}
+    <form id="getitemsform" action="/items" method="GET">
+        <h2>GET ITEMS</h2>
+             
+        <input type="submit" id="submit-buttom">
+        
+    </form>  
+
+{% endblock %}
