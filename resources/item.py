@@ -78,24 +78,13 @@ class Item(Resource):
 class ItemList(Resource):
     @jwt_optional
     def get(self):
-        access_token=session['access_token']       
-        
-        user_id=access_token
-        #user_id=get_jwt_identity()
-        access_token=get_jwt_identity()
-
-        
+        user_id=get_jwt_identity()        
         items = [x.json() for x in ItemModel.find_all()]
-        
-        
-
         if user_id is not None:
-            #return {'items':items}, 200
-            #items={'items':items}
-            itemshtml=items
-            return make_response(render_template('items.html', itemshtml=itemshtml))
-            
+            return {'items':items}, 200            
         return {'items': [x['name'] for x in items],'message':'more info if you log in'}, 200
-        
 
-     
+        
+    
+
+    

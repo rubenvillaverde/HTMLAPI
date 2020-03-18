@@ -144,7 +144,7 @@ api.add_resource(ItemList, '/items')
 api.add_resource(UserRegister, '/register2')
 api.add_resource(User, '/user/<int:user_id>')
 api.add_resource(UserLogin, '/login2')
-api.add_resource(UserLogout, '/logout')
+api.add_resource(UserLogout, '/logout2')
 api.add_resource(TokenRefresh, '/refresh')
 
 
