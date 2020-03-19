@@ -62,26 +62,24 @@ class Item(Resource):
 
     def put(self, name):
         data = Item.parser.parse_args()
-
         item = ItemModel.find_by_name(name)
-
         if item:
             item.price = data['price']
         else:
             item = ItemModel(name, **data)
-
         item.save_to_db()
-
         return item.json()
 
 
 class ItemList(Resource):
-    @jwt_optional
+    @jwt_required
     def get(self):
         user_id=get_jwt_identity()        
         items = [x.json() for x in ItemModel.find_all()]
         if user_id is not None:
-            return {'items':items}, 200            
+            #return {'items':items}, 200
+            itemshtml=items
+            return make_response(render_template('items.html', itemshtml=itemshtml))            
         return {'items': [x['name'] for x in items],'message':'more info if you log in'}, 200
 
         

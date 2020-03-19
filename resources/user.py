@@ -9,7 +9,8 @@ from flask_jwt_extended import (
     jwt_refresh_token_required,
     get_jwt_identity,
     jwt_required,
-    get_raw_jwt 
+    get_raw_jwt,
+    unset_jwt_cookies,
 )
 from models.user import UserModel
 from blacklist import BLACKLIST
@@ -66,8 +67,7 @@ class User(Resource):
         return {'message':'User deleted'}, 200
         
 
-class UserLogin(Resource):
-    
+class UserLogin(Resource):   
 
     @classmethod
     def post(cls):
@@ -78,28 +78,26 @@ class UserLogin(Resource):
         #user=UserModel.find_by_username(data['username'])
         user=UserModel.find_by_username(username)
         
-        if user is not None and user.password==password:
-                       
+        if user is not None and user.password==password:                       
             access_token=create_access_token(identity=user.id, fresh=True)
             refresh_token=create_refresh_token(user.id)
-            session['access_token']=access_token
+            resp = jsonify({'login':True})
+            set_access_cookies(resp, access_token)
+            set_refresh_cookies(resp, refresh_token)
+            return make_response(resp, 200)
             
             #return{'access_token':access_token, 'refresh_token':refresh_token}, 200
-            return make_response(render_template('home.html'))
+            #return make_response(render_template('home.html'))
             
             
-        return {'message':'Invalid credentials'}, 401
+        return make_response(jsonify({'login':False}), 401)
 
 class UserLogout(Resource):
-    @jwt_required
-    def post(self):
-                
-        jti = get_raw_jwt()['jti']
-        BLACKLIST.add(jti)
-        mensaje={'message':'succesfully log out'}
-        #return {'message':'succesfully log out'}, 200
-        return make_response(render_template("logout3.html", message=mensaje['message']))
-
+    def get(self):
+        resp = jsonify({'logout': True})
+        unset_jwt_cookies(resp)
+        return make_response(resp, 200)
+        
 
 
 

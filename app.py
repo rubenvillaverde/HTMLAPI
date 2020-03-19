@@ -16,7 +16,7 @@
 from flask import Flask
 from flask import json, jsonify, render_template, request, session
 from flask_restful import Api
-from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager,unset_jwt_cookies, jwt_refresh_token_required
 from resources.user import UserRegister, User, UserLogin, UserLogout, TokenRefresh
 from resources.item import Item, ItemList
 from resources.store import Store, StoreList
@@ -30,9 +30,10 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.config['JWT_BLACKLIST_ENABLED'] = True
 app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
-#app.config['JWT_TOKEN_LOCATION'] = ['cookies']
-#app.config['JWT_ACCESS_COOKIE_PATH']='/login'
-#app.config['JWT_COOKIE_CSRF_PROTECT'] = False
+app.config['JWT_TOKEN_LOCATION'] = ['cookies']
+app.config['JWT_ACCESS_COOKIE_PATH']='/api/'
+app.config['JWT_REFRESH_COOKIE_PATH'] = '/token/refresh'
+app.config['JWT_COOKIE_CSRF_PROTECT'] = False
 app.secret_key = 'jose'
 
 api = Api(app)
@@ -120,19 +121,6 @@ def posthome():
     #name=request.form['name']    
     #return render_template('itembynameAPI.html', name=request.form['name'])
 
-@app.route('/loginhtml', methods=['POST'])
-def login_user():
-    password=request.form['password']
-    username=request.form['username']    
-    user=UserModel.find_by_username(username)
-
-    if password==user.password:
-        return render_template('profile.html', username=request.form['username'])
-        #al devolver la render template tenemos que definir que variable queremos reutilizar
-        #pàra que salga tambn con el template
-    else:
-        return render_template('profile.html', username='usuario o contraseña incorrectos')
-
 
 
 
@@ -140,11 +128,11 @@ api.add_resource(Store, '/store/<string:name>')
 api.add_resource(StoreList, '/stores')
 api.add_resource(Item, '/item/<string:name>')
 #api.add_resource(Item, '/item')
-api.add_resource(ItemList, '/items')
+api.add_resource(ItemList, '/api/items')
 api.add_resource(UserRegister, '/register2')
 api.add_resource(User, '/user/<int:user_id>')
 api.add_resource(UserLogin, '/login2')
-api.add_resource(UserLogout, '/logout2')
+api.add_resource(UserLogout, '/token/logout2')
 api.add_resource(TokenRefresh, '/refresh')
 
 

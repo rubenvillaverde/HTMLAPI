@@ -1,0 +1,22 @@
+
+Para realizar este paso debemos tener en cuenta que la api está estructurada de tal manera
+que las rutas las definimos en archivos externos, en formatos de clases en lugar de definir 
+las rutas en el app.py.
+
+Esto hace que a la hora de responder tengamos que poner el comando return make_response(variable, error)
+cuando si lo hacemos en el archivo de app.py tan solo basta con return variable, error.
+
+En esta jornadda he detectado también que la variable para llevarla de python hasta html ha de estar 
+dentro del render template a la cual la queremos llevar, y no fuera. Es decir, hacerlo así:
+    return make_response(render_template('hola.html', saludo=saludo))
+    habiendo definido previamente la variable saludo en python 
+
+A la hora de crear el login no ha habido problemas per sí a la hora de realizar el logout. 
+Inicialmente el Logout estaba como un método POST(ya que en el curso inicial lo iba a hacer con 
+blacklist) pero siendo un metodo post continuamente nos salía el error de Method not valid for this request.
+De tal manera que cambiando dicho POST a un método GET sñi que funciona. Pero ojo, eso no es lo que viene en la 
+documentación del JWT manager.
+
+A continuación procederemos a subir los nuevos archivos a GITHUB y a intentar que nuestro login guarde el Token y que a la 
+vez nos redirija a home.html. Es decri, deberemos modificar el return make_response(resp, 200) para que a su vez nos redirija.
+Tiene pinta de que la variable resp={'login':True} es tan solo para mostrarlo al usuario. 
